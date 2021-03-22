@@ -5,9 +5,7 @@
 
 ## Miot-esp32-sdk二次开发项目备注
 * 搭建环境请参考小米二次开发的指南；
-* Miot-esp32-sdk用到了esp-idf的releasev3.1版本，所以想着sdk，工具链，esp环境设置都用v3.1版本，[文档地址](https://docs.espressif.com/_/downloads/esp-idf/en/release-v3.1/pdf/)；
-* esp32工具链v3.1版本对应的osx文件[点击这里下载](https://dl.espressif.com/dl/xtensa-esp32-elf-osx-1.22.0-80-g6c4433a-5.2.0.tar.gz)
-* 
+* Miot-esp32-sdk用到了esp-idf的releasev4.0版本
 
 
 ## 模板固件本地下载
@@ -28,14 +26,28 @@
 	* 烧录phy_init_data
 	
 	```
-	--port /dev/cu.SLAB_USBtoUART -b 115200 write_flash 0xf000 /Users/fick/Documents/github/MIoT-ESP32-SDK/debug/builds/ruos.flowerpot.rssp01-1/bins/phy_init_data.bin
+	esptool.py --port /dev/cu.SLAB_USBtoUART -b 115200 write_flash 0xf000 /Users/fick/Documents/github/MIoT-ESP32-SDK/debug/builds/ruos.flowerpot.rssp01-1/bins/phy_init_data.bin
 	```
 	
 	* 烧录分区表，如果分区表被破坏，可以将此bin文件烧录到0x8000，恢复分区表
 	
 	```
-	--port /dev/cu.SLAB_USBtoUART -b 115200 write_flash 0x8000 /Users/fick/Documents/github/MIoT-ESP32-SDK/debug/builds/ruos.flowerpot.rssp01-1/bins/xiaomi_partitions_4M.bin
+	esptool.py --port /dev/cu.SLAB_USBtoUART -b 115200 write_flash 0x8000 /Users/fick/Documents/github/MIoT-ESP32-SDK/debug/builds/ruos.flowerpot.rssp01-1/bins/xiaomi_partitions_4M.bin
 	```
+	
+## 打包及烧录
+* 编译打包：到项目目录下执行：
+```
+./gen_default.sh 
+```
+* 清除设备所有数据：在项目目录下执行(设备端口号以实际为准)：
+```
+make erase_flash ESPPORT=/dev/cu.SLAB_USBtoUART
+```
+* 烧录所有数据：在项目目录下执行(设备端口号以实际为准)：
+```
+make flash ESPPORT=/dev/cu.SLAB_USBtoUART
+```
 	
 ## 默认分区详解
 
